@@ -3,7 +3,9 @@ const { watch } = require("fs")
 const { resolve } = require("path")
 const WebSocket = require("ws")
 var jz = require("jeezy")
-const wss = new WebSocket.Server( { port: 9229})
+const request = require("request")
+const wss = new WebSocket.Server( { port: 8082})
+const jokecard = require('./jokelist')
 let oldjoke
 //create class for user client objects. needs...
 //username, list of jokes seen, which will be an object of jokeid and rating.
@@ -60,23 +62,10 @@ let clientlist = [{
     jokes: []
 }
 ]
-// each joke has jokeidnum and jokestring
-jokelist = 
-[
-    jokefactory(0,  "this is funny joke"),
-    {
-        jokeidnum: 1, 
-        jokestring: "this is dark  joke"
-    },
-    {
-        jokeidnum: 2, 
-        jokestring: "this is bad  joke."
-    }, 
-    jokefactory(3, " this is dad joke."),
-    jokefactory(4, "this is rather weird joke")
-]
+//gets jokes from api ninja
+jokelist = jokecard.createJokeList()
 
-
+//creates correlations between jokes
 const generatecorrjokes = () => {
     jz = require("jeezy")
     data = []
@@ -154,6 +143,7 @@ const usedcorrelatedjokes = (currclient, bestcorr, rabbithole = 0) => {
     })
 }
 
+//checks if joke was already seen by person, keeps trying jokes until new one found
 const usedjoke = (currclient) => {
     
     let currentjoke = jokelist[Math.floor(Math.random()*jokelist.length)]
@@ -228,32 +218,9 @@ const checkjoke =  (clientlist, currclient) => {
         clientjokes.push(client.jokes)
     })
     return currentjoke
-    
-    
 }
 
-// const pythondataobject = {
-    //     clientjokes: clientjokes, 
-    //     clientjokeid: theclient.jokeid
-    // }
-    // if(theclient.jokeid){
-    //    async function getpy() {
-    //     let pydata
-    //         try {
-    //             console.log('trying pythonfunc')
-    //             pydata = await pythoninterface(pythondataobject)
-    //             console.log(pydata)
-    //             // console.log(pydata.clientjokes)
-    //             // return pydata
-    //         } catch(err) {
-    //             console.log('errir ')
-    //         }
-            
-    //    }
-    //    getpy()
-       
-    // }
-
+//send joke to client.
 const sendjokes = (alreadyuser, theclient, currclient, ws, clientlist) => {
     let currentjoke = checkjoke(clientlist, currclient)
     console.log('sending joke')
@@ -303,6 +270,8 @@ const checkuser = (theclient, ws) => {
 wss.on("connection", ws => {
     console.log('new client on')
     let alreadyuser = false
+    jokelist = jokelist
+    console.log(jokelist)
     let currclient
     ws.on("message", data => {
         theclient = JSON.parse(data)
@@ -348,4 +317,5 @@ wss.on("connection", ws => {
     })
     
 })
+
 
