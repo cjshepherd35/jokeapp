@@ -1,7 +1,4 @@
-const ws = new WebSocket('ws://localhost:9229')
-
-
-
+const ws = new WebSocket('ws://localhost:8082')
 
 const newuserfunc = (e, currentjoke, ratingobj, joketext) => {
     let usercontainer = JSON.parse(e.data)
@@ -31,7 +28,7 @@ const jokepage  = (currentjoke, ratingobj, joketext) => {
     jokediv.appendChild(joketext)
     ratingdiv.appendChild(ratinginput)
     ratingdiv.appendChild(ratingbutton)
-    jokeform.appendChild(jokediv)
+    ojform.appendChild(jokediv)
     jokeform.appendChild(ratingdiv)
     ratingobj.jokeid = currentjoke.jokeidnum   
     
@@ -52,6 +49,7 @@ const loginload = () => {
     const newuserform = document.querySelector('#newuserform')
     const input = document.querySelector("#username")
     const jokeform = document.querySelector("#jokeform")
+    const ojform = document.querySelector("ojform")
     const newusercreationform = document.querySelector('#newusercreationform')
     let isnewuser = false
     let joketext
