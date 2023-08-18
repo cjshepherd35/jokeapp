@@ -7,7 +7,7 @@ function getjokes(limit)
             request.get({
                 url: 'https://api.api-ninjas.com/v1/jokes?limit=' + limit,
                 headers: {
-                'X-Api-Key': 'huGRRZsAzU/dqIVPu9OQFA==aMaYrQs0c0Y4oOXM'
+                'X-Api-Key': '*****'
                 },
             }, function(error, response, body) {
                 if(error) return console.error('Request failed:', error);
