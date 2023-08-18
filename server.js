@@ -30,7 +30,7 @@ const jokefactory = (id, jokestring) => {
 
 
 
-let clientlist = [{
+/*let clientlist = [{
     user: "mark",
     jokes: []
 }, 
@@ -61,7 +61,7 @@ let clientlist = [{
     user: "paul",
     jokes: []
 }
-]
+]*/
 //gets jokes from api ninja
 jokelist = jokecard.createJokeList()
 
